@@ -183,14 +183,14 @@ class GeneratorPage extends StatelessWidget {
                   size: 24.0,
                   semanticLabel: "Favoritos",
                 ),
-                label: Text('Like'),
+                label: Text('Me gusta'),
               ),
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   appState.getNext();
                 },
-                child: Text('Next'),
+                child: Text('Siguiente'),
               ),
             ],
           ),
