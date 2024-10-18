@@ -1,4 +1,5 @@
-# mycine_app
+# Diseño de aplicaciones móviles
+## Actividad 3.3. Inicio del desarrollo 
 
 A new Flutter project.
 
