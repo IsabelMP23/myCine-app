@@ -26,35 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var actual = 'Hola mundo';
-
-  var saludo = [
-    'Hola mundo',
-    'Hello world',
-    'Bonjour le monde',
-    "Olá mundo",
-    "Salve mundi",
-    "你好世界",
-    "Hallo welt",
-  ]; 
-  
-  final random = Random();
-  
-  void getNext() {
-    actual = saludo[random.nextInt(saludo.length)];
-    notifyListeners();
-  }
-
-  var favorites = <String> [];
-
-  void toggleFavorite() {
-    if (favorites.contains(actual)) {
-      favorites.remove(actual);
-    } else {
-      favorites.add(actual);
-    }
-    notifyListeners();
-  }
+  notifyListeners();
 }
 
 class MyHomePage extends StatefulWidget {
@@ -72,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = GeneratorPage();
+        page = HomePage();
         break;
       case 1:
         page = FavoritesPage();
@@ -116,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         } else {
-             return Scaffold(
+          return Scaffold(
             body: Row(
               children: [
                 SafeArea(
@@ -150,52 +122,156 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class GeneratorPage extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var titleText = Theme.of(context).textTheme.headlineMedium;
-    var pair = appState.actual;
+    var titleText = Theme.of(context).textTheme.headlineSmall!.copyWith(
+          color: Colors.white,
+        );
 
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
+    var textDescription = Theme.of(context).textTheme.bodySmall!.copyWith(
+          color: Colors.white,
+        );        
+    var description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui sit amet blandit imperdiet. Vestibulum pellentesque nibh et est egestas volutpat."; 
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("Welcome to Flutter", style: titleText),
-          SizedBox(height: 30),
-          BigCard(pair: pair),
-          SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: appState.toggleFavorite,
-                icon: Icon(
-                  icon,
-                  color: Colors.pink,
-                  size: 24.0,
-                  semanticLabel: "Favoritos",
+
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: Text('MyCine', style: titleText),
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {},
+              color: Colors.white,
+              iconSize: 30,
+            ),
+          ],
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Flexible(
+              flex: 3,
+              child: Stack(children: [
+                Container(
+                  padding: EdgeInsets.all(50),
+                  color: Theme.of(context).colorScheme.secondary,
+                  height: 370,
                 ),
-                label: Text('Me gusta'),
+                Positioned(
+                    left: 30,
+                    bottom: 70,
+                    width: 320,
+                    child:
+                        Text(description, style: textDescription, maxLines: 3, softWrap: true, overflow: TextOverflow.ellipsis)),
+                Positioned(
+                    left: 30,
+                    bottom: 10,
+                    child: ElevatedButton(
+                        onPressed: () {}, child: Text('Ver más'))),
+              ]),
+            ),
+            Flexible(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Categories(),
               ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Siguiente'),
+            ),
+            Flexible(
+              flex: 2,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Recommend(),
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
+class Categories extends StatelessWidget {
+  const Categories({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var style = theme.textTheme.headlineSmall!.copyWith(
+      color: Colors.black,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Categorías', style: style, semanticsLabel: 'Categorías'),
+        SizedBox(height: 10),
+        SizedBox(
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Acción'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Drama'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Comedia'),
+                ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+}
+
+class Recommend extends StatelessWidget {
+  const Recommend({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var style = theme.textTheme.headlineSmall!.copyWith(
+      color: Colors.black,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Recomendaciones', style: style),
+        SizedBox(height: 10),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BigCard(),
+              BigCard(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -203,26 +279,27 @@ class GeneratorPage extends StatelessWidget {
 class BigCard extends StatelessWidget {
   const BigCard({
     super.key,
-    required this.pair,
   });
-
-  final String pair;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.displaySmall!.copyWith(
-      color: theme.colorScheme.onPrimary,
+    var style = theme.textTheme.bodySmall!.copyWith(
+      color: Colors.white,
     );
 
     return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          pair,
-          style: style,
-          semanticsLabel: pair,
+      color: theme.colorScheme.secondary,
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          debugPrint('Card tapped.');
+        },
+        child: SizedBox(
+          width: 140,
+          height: 200,
+          child: Center(child: Text('Películas', style: style)),
         ),
       ),
     );
@@ -234,24 +311,14 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    if (appState.favorites.isEmpty) {
-      return Center(
-        child: Text('Aun no tiene favoritos.'),
-      );
-    }
-
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('Tienes '
-              '${appState.favorites.length} favoritos:'),
-        ),
-        for (var pair in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(pair),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('Tienes 0 favoritos:'),
           ),
+        ),
       ],
     );
   }
