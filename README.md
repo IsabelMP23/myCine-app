@@ -1,7 +1,7 @@
 # Diseño de aplicaciones móviles
 ## 3.4. Utilización de widgets
 
-A new Flutter project.
+Configuración de los widgets: Text, Row, Column, Stack y Container, en la aplicación móvil. 
 
 ## Getting Started
 
