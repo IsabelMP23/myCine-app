@@ -1,5 +1,5 @@
 # Diseño de aplicaciones móviles
-## Actividad 3.3. Inicio del desarrollo 
+## 3.4. Utilización de widgets
 
 A new Flutter project.
 
