@@ -1,12 +1,9 @@
 # Diseño de aplicaciones móviles
-## Actividad 3.3. Inicio del desarrollo 
+## Actividad 3.5. Home screen
 
-A new Flutter project.
+Crear la pantalla de inicio de la aplicación móvil,  la cual debe mostrar un mensaje de bienvenida, una imagen de fondo y el nombre de la aplicación.
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
 A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
