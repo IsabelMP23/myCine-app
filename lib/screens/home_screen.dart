@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mycine_app/models/pokemon.dart';
+import 'package:mycine_app/services/api_service.dart';
+import 'package:mycine_app/my_flutter_app_icons.dart';
 
 class MyAppState extends ChangeNotifier {
   @override
@@ -23,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = HomePage();
         break;
       case 1:
-        page = FavoritesPage();
+        page = PokemonPage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -50,8 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Inicio',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite),
-                    label: 'Favoritos',
+                    icon: Icon(MyFlutterApp.icons8_pokemon),
+                    label: 'Pokemons',
                   ),
                 ],
                 currentIndex: selectedIndex,
@@ -106,9 +109,9 @@ class HomePage extends StatelessWidget {
         );
     var textDescription = Theme.of(context).textTheme.bodySmall!.copyWith(
           color: Colors.white,
-        );        
-    var description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui sit amet blandit imperdiet. Vestibulum pellentesque nibh et est egestas volutpat."; 
-
+        );
+    var description =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui sit amet blandit imperdiet. Vestibulum pellentesque nibh et est egestas volutpat.";
 
     return Scaffold(
         extendBodyBehindAppBar: true,
@@ -139,8 +142,11 @@ class HomePage extends StatelessWidget {
                     left: 30,
                     bottom: 70,
                     width: 320,
-                    child:
-                        Text(description, style: textDescription, maxLines: 3, softWrap: true, overflow: TextOverflow.ellipsis)),
+                    child: Text(description,
+                        style: textDescription,
+                        maxLines: 3,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis)),
                 Positioned(
                     left: 30,
                     bottom: 10,
@@ -281,18 +287,44 @@ class BigCard extends StatelessWidget {
   }
 }
 
-class FavoritesPage extends StatelessWidget {
+class PokemonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text('Tienes 0 favoritos:'),
-          ),
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Pokemons'),
         ),
-      ],
-    );
+        body: FutureBuilder<PokemonListResponse>(
+          future: fetchPokemons(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              final pokemonsList = snapshot.data!.results;
+              if (pokemonsList.isEmpty) {
+                return Center(child: Text('Datos no disponibles.'));
+              }
+
+              return ListView.builder(
+                itemCount: pokemonsList.length,
+                itemBuilder: (context, index) {
+                  var pokemon = pokemonsList[index];
+
+                  return ListTile(
+                    leading: pokemon.imageUrl != null
+                        ? Image.network(pokemon.imageUrl!)
+                        : Icon(Icons.error),
+                    title: Text(pokemon.name, style: TextStyle(color: Colors.white),),
+                    subtitle: Text('# ${pokemon.id}', style: TextStyle(color: Colors.white)),
+                  );
+                },
+              );
+            }
+            return Center(child: Text('Sin datos'));
+          },
+        ));
   }
 }
