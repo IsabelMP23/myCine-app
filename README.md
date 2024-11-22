@@ -1,7 +1,7 @@
 # Diseño de aplicaciones móviles
-## Actividad 3.6.  Peticiones HTTP
+## 3.7. Integración de base de datos 
 
-Implementación de solicitudes HTTP en la aplicación móvil utilizando la API de Pokémon para realizar consultas y obtener resultados conforme a la estructura definida por dicha AP
+Se implementó la base de datos de Firebase, junto con la autenticación de usuarios. Además, se desarrolló la funcionalidad para recuperar datos de películas y mostrarlos en la pantalla principal (Home). También se creó una pantalla de perfil de usuario que permite cerrar la sesión del usuario actual
 
 ## Getting Started
 A few resources to get you started if this is your first Flutter project:
