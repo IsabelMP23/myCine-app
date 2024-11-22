@@ -3,13 +3,8 @@ import 'package:flutter/material.dart';
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    var theme = Theme.of(context);
-    var textDescription = theme.textTheme.bodyMedium!.copyWith(
-      color: Colors.white,
-    );
-    var bienvenida = 'Descubre las mejores películas y encuentra tu próxima obsesión.';
-
+    var bienvenida =
+        'Descubre las mejores películas y encuentra tu próxima obsesión.';
 
     return Scaffold(
       body: Stack(
@@ -49,7 +44,6 @@ class WelcomeScreen extends StatelessWidget {
                   height: 60,
                   child: Text(
                     bienvenida,
-                    style: textDescription,
                     maxLines: 3,
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -61,14 +55,14 @@ class WelcomeScreen extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: Colors.white,               
+                      foregroundColor: Colors.white,
                     ),
-                    child: Text('Ingresar'),                ),
-                )
+                    child: Text('Ingresar'),
+                  ),
+                ),
               ],
             ),
           )

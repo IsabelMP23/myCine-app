@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mycine_app/models/pokemon.dart';
-import 'package:mycine_app/services/api_service.dart';
-import 'package:mycine_app/my_flutter_app_icons.dart';
+import 'package:mycine_app/screens/profile_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyAppState extends ChangeNotifier {
   @override
@@ -26,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = HomePage();
         break;
       case 1:
-        page = PokemonPage();
+        page = UserProfileScreen();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -53,8 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Inicio',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(MyFlutterApp.icons8_pokemon),
-                    label: 'Pokemons',
+                    icon: Icon(Icons.person),
+                    label: 'Perfil',
                   ),
                 ],
                 currentIndex: selectedIndex,
@@ -127,12 +126,11 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
-              flex: 3,
-              child: Stack(children: [
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(children: [
                 Container(
                   padding: EdgeInsets.all(50),
                   color: Theme.of(context).colorScheme.secondary,
@@ -153,25 +151,42 @@ class HomePage extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {}, child: Text('Ver más'))),
               ]),
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.all(20),
+              TitleText(titleText: titleText, titulo:  'Categoria'),
+              Container(
+                padding: EdgeInsets.all(10),
                 child: Categories(),
               ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Container(
-                padding: EdgeInsets.all(20),
+              TitleText(titleText: titleText, titulo: 'Recomendaciones'),
+              Container(
+                padding: EdgeInsets.all(10),
+                height: 265,
                 child: Recommend(),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }
+
+class TitleText extends StatelessWidget {
+  const TitleText({
+    super.key,
+    required this.titleText,
+    required this.titulo,
+  });
+
+  final TextStyle titleText;
+  final String titulo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Text(titulo ,style: titleText ,),
+    );
+  }
+} 
+
 
 class Categories extends StatelessWidget {
   const Categories({
@@ -180,151 +195,110 @@ class Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var style = theme.textTheme.headlineSmall!.copyWith(
-      color: Colors.white,
-    );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Categorías', style: style, semanticsLabel: 'Categorías'),
-        SizedBox(height: 10),
-        SizedBox(
-          height: 40,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Acción'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Drama'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Comedia'),
-                ),
-              ),
-            ],
+    return SizedBox(
+      height: 40,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text('Acción'),
+            ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class Recommend extends StatelessWidget {
-  const Recommend({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var style = theme.textTheme.headlineSmall!.copyWith(
-      color: Colors.white,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Recomendaciones', style: style),
-        SizedBox(height: 10),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BigCard(),
-              BigCard(),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text('Drama'),
+            ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    var style = theme.textTheme.bodySmall!.copyWith(
-      color: Colors.white,
-    );
-
-    return Card(
-      color: theme.colorScheme.secondary,
-      clipBehavior: Clip.hardEdge,
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          debugPrint('Card tapped.');
-        },
-        child: SizedBox(
-          width: 140,
-          height: 200,
-          child: Center(child: Text('Películas', style: style)),
-        ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text('Comedia'),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class PokemonPage extends StatelessWidget {
+
+class Recommend extends StatelessWidget {
+  
+  final CollectionReference moviesRef =
+        FirebaseFirestore.instance.collection('movies');
+
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Pokemons'),
-        ),
-        body: FutureBuilder<PokemonListResponse>(
-          future: fetchPokemons(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              final pokemonsList = snapshot.data!.results;
-              if (pokemonsList.isEmpty) {
-                return Center(child: Text('Datos no disponibles.'));
-              }
+    return StreamBuilder<QuerySnapshot>(
+        stream: moviesRef.snapshots(),
+        builder: (context, snapshot) {
 
-              return ListView.builder(
-                itemCount: pokemonsList.length,
-                itemBuilder: (context, index) {
-                  var pokemon = pokemonsList[index];
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-                  return ListTile(
-                    leading: pokemon.imageUrl != null
-                        ? Image.network(pokemon.imageUrl!)
-                        : Icon(Icons.error),
-                    title: Text(pokemon.name, style: TextStyle(color: Colors.white),),
-                    subtitle: Text('# ${pokemon.id}', style: TextStyle(color: Colors.white)),
-                  );
-                },
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final movies = snapshot.data?.docs ?? [];
+
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: movies.length,
+            itemBuilder: (context, index) {
+              var movie = movies[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: listaPeliculas(context, movie),
               );
-            }
-            return Center(child: Text('Sin datos'));
-          },
-        ));
+            },
+          );
+        });
+  }
+  
+  Widget listaPeliculas(BuildContext context, DocumentSnapshot document) {
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 200,
+          width: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+            image: DecorationImage(
+              image: NetworkImage(document['posterUrl']),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          document['titulo'],
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          )),
+      ],
+    );
   }
 }

@@ -24,6 +24,6 @@ Future<PokemonListResponse> fetchPokemons() async {
 
     return pokemonList;
   } else {
-    throw Exception('Errro al cargar lista de pokemons');
+    throw Exception('Error al cargar lista de pokemons');
   }
 }

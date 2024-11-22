@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "337241488079",
+    "project_id": "mycine-app-flutter",
+    "storage_bucket": "mycine-app-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337241488079:android:117596b3f0c152693015ba",
+        "android_client_info": {
+          "package_name": "com.example.mycine_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCGo3vO6JINPtYSzYoCkwWeHGWyOlDYxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
